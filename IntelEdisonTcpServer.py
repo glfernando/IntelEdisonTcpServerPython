@@ -44,8 +44,10 @@ def json_parser(j):
 def handle_request(request):
     data = request.recv(1024)
     if not data: return 0
-    print (json.dumps(data, sort_keys=True, indent=4, separators=(',', ':')))
-    json.loads(data, object_hook=json_parser)
+    f = data.makefile()
+    for l in f.readlines():
+        print (json.dumps(l, sort_keys=True, indent=4, separators=(',', ':')))
+        json.loads(l, object_hook=json_parser)
 
     return 1
 
